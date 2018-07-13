@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class RootControllerTest < ActionDispatch::IntegrationTest
+class HomeControllerTest < ActionDispatch::IntegrationTest
   test "should get index" do
     get '/'
     assert_response :success
