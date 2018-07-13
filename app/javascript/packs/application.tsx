@@ -10,7 +10,25 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
+import { ResourceView } from './resource-view'
+
+const sample = {
+  name: "Luke Skywalker",
+  age: 12,
+  dupa: null,
+  films: [
+    "/film/1",
+    "/film/2",
+    { _href: '/film/1', _text: '/film/1' },
+    "/film/3",
+    "/film/4",
+  ],
+  vehicles: []
+}
+
 const App = () =>
-  <h1>Hello from React!</h1>
+  <React.Fragment>
+    <ResourceView resource={sample}/>
+  </React.Fragment>
 
 ReactDOM.render(<App />, document.getElementById('app'))
