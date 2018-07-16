@@ -1,8 +1,9 @@
 import * as React from 'react'
-import { renderAsJson } from './render-as-json'
+import { renderAsJson, LinkClickHandler } from './render-as-json'
 
 interface Props {
   resource: any
+  onLinkClick: LinkClickHandler
 }
 
 export class ResourceView extends React.Component<Props> {
@@ -11,16 +12,12 @@ export class ResourceView extends React.Component<Props> {
   }
 
   public render() {
-    const { resource } = this.props
+    const { resource, onLinkClick } = this.props
     return (
       <pre>
-        {renderAsJson(resource, this.onLinkClick)}
+        {renderAsJson(resource, onLinkClick)}
       </pre>
     )
-  }
-
-  private onLinkClick = (href: string) => {
-    console.log('onLinkClick', href)
   }
 }
 

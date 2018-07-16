@@ -1,0 +1,12 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+leia_organa:
+  name: Leia Organa
+  height: 150
+  mass: 49
+  hair_color: brown
+  skin_color: light
+  eye_color: brown
+  birth_year: 19BBY
+  gender: female
+  planet: alderaan

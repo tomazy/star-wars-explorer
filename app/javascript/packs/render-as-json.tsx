@@ -6,7 +6,7 @@ interface Link {
 }
 
 type SyntaxTuple = [string, string | JSX.Element]
-type LinkClickHandler = (href: string) => void;
+export type LinkClickHandler = (href: string) => void;
 
 const kwd = (s: string): SyntaxTuple => ['dark-blue', s]
 const prop = (s: string): SyntaxTuple => ['dark-green', s]

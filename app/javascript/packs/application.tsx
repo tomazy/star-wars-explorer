@@ -12,23 +12,39 @@ import * as ReactDOM from 'react-dom'
 
 import { ResourceView } from './resource-view'
 
-const sample = {
-  name: "Luke Skywalker",
-  age: 12,
-  dupa: null,
-  films: [
-    "/film/1",
-    "/film/2",
-    { _href: '/film/1', _text: '/film/1' },
-    "/film/3",
-    "/film/4",
-  ],
-  vehicles: []
+const ROOT_API = '/api'
+
+interface State {
+  resource?: Object
 }
 
-const App = () =>
-  <React.Fragment>
-    <ResourceView resource={sample}/>
-  </React.Fragment>
+class App extends React.Component<{}, State> {
+  state = {
+    resource: null
+  }
+
+  public async componentWillMount() {
+    this.loadResource(ROOT_API)
+  }
+
+  public render() {
+    const { resource } = this.state
+    return (
+      <React.Fragment>
+        <ResourceView resource={resource} onLinkClick={this.handleLinkClick} />
+      </React.Fragment>
+    );
+  }
+
+  private async loadResource(href) {
+    const res = await fetch(href)
+    const resource = await res.json()
+    this.setState({ resource })
+  }
+
+  private handleLinkClick = href => {
+    this.loadResource(href)
+  }
+}
 
 ReactDOM.render(<App />, document.getElementById('app'))

@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+cache_status_planets:
+  resource: planets
+  cached: true
+
+cache_status_people:
+  resource: people
+  cached: true

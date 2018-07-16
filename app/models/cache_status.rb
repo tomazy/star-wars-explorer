@@ -1,0 +1,2 @@
+class CacheStatus < ApplicationRecord
+end
