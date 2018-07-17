@@ -6,8 +6,16 @@ class Swapi
       all_resources 'planets'
     end
 
+    def all_people
+      all_resources 'people'
+    end
+
     def planet(id)
       fetch_json resource_url('planets', id)
+    end
+
+    def person(id)
+      fetch_json resource_url('people', id)
     end
 
     private
@@ -37,6 +45,7 @@ class Swapi
     end
 
     def fetch_json(url)
+      Rails.logger.debug "Swapi.fetch_json('#{url}')"
       res = open(url, 'User-Agent' => 'swapi-ruby').read
       JSON.load(res)
     end

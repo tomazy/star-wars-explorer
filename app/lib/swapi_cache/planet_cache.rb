@@ -1,28 +1,17 @@
 class SwapiCache::PlanetCache < SwapiCache::Base
   class << self
     def ensure_planets_cached
-      status = CacheStatus.where(resource: 'planets').first_or_initialize
-      return if status.cached
-
-      populate_many Swapi.all_planets
-
-      status.cached = true
-      status.save!
+      cache 'planets' do
+        populate_many Swapi.all_planets
+      end
     end
 
     def ensure_planet_cached(id)
-      # 1. If we have all planets then we are good to go!
-      status = CacheStatus.where(resource: 'planets').first_or_initialize
-      return if status.cached
+      return if cached? 'planets'
 
-      # 2. Otherwise - check this individual one.
-      status = CacheStatus.where(resource: "planets/#{id}").first_or_initialize
-      return if status.cached
-
-      populate_one Swapi.planet(id)
-
-      status.cached = true
-      status.save!
+      cache "planets/#{id}" do
+        populate_one Swapi.planet(id)
+      end
     end
 
     protected
