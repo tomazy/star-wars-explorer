@@ -11,35 +11,58 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
 import { ResourceView } from './resource-view'
+import { DelayedLoading } from './delayed-loading'
 
 const ROOT_API = '/api'
 
 interface State {
+  loading: boolean
+  href: string
   resource?: Object
 }
 
+const Loading = () =>
+  <DelayedLoading>
+    <div className='mv4 silver f6'>
+      please wait...
+    </div>
+  </DelayedLoading>
+
 class App extends React.Component<{}, State> {
-  state = {
-    resource: null
+
+  public state = {
+    loading: false,
+    href: '',
+    resource: null,
   }
 
-  public async componentWillMount() {
+  public componentWillMount() {
     this.loadResource(ROOT_API)
   }
 
   public render() {
-    const { resource } = this.state
+    const { resource, href, loading } = this.state
     return (
       <React.Fragment>
-        <ResourceView resource={resource} onLinkClick={this.handleLinkClick} />
+        <div>
+          {href}
+        </div>
+        {
+          loading
+          ? <Loading />
+          : resource && <ResourceView resource={resource} onLinkClick={this.handleLinkClick} />
+        }
       </React.Fragment>
     );
   }
 
   private async loadResource(href) {
+    this.setState({ href, loading: true, resource: null })
+
     const res = await fetch(href)
     const resource = await res.json()
-    this.setState({ resource })
+
+    this.setState({ resource, loading: false })
   }
 
   private handleLinkClick = href => {

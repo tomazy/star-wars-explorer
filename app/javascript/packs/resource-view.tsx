@@ -8,9 +8,6 @@ interface Props {
 
 export class ResourceView extends React.Component<Props> {
 
-  public componentDidMount() {
-  }
-
   public render() {
     const { resource, onLinkClick } = this.props
     return (

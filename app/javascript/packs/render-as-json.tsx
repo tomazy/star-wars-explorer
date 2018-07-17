@@ -8,6 +8,15 @@ interface Link {
 type SyntaxTuple = [string, string | JSX.Element]
 export type LinkClickHandler = (href: string) => void;
 
+export function renderAsJson(o: any, onLinkClick: LinkClickHandler) {
+  const syntax = []
+  renderRecursive(o, syntax, 0, onLinkClick)
+  return syntax.map((tuple, i) => {
+    const [className, element] = tuple
+    return <span key={i} className={className || undefined}>{element}</span>
+  })
+}
+
 const kwd = (s: string): SyntaxTuple => ['dark-blue', s]
 const prop = (s: string): SyntaxTuple => ['dark-green', s]
 const pun = (s: string): SyntaxTuple => ['silver', s]
@@ -25,19 +34,11 @@ const SQUARE_OPEN = pun('[')
 const SQUARE_CLOSE = pun(']')
 const COLON = pun(':')
 const BR = br()
-
-export function renderAsJson(o: any, onLinkClick: LinkClickHandler) {
-  const syntax = []
-  renderRecursive(o, syntax, 0, onLinkClick)
-  return syntax.map((tuple, i) => {
-    const [className, element] = tuple
-    return <span key={i} className={className || undefined}>{element}</span>
-  })
-}
+const NULL = kwd('null')
 
 function renderRecursive(o: any, syntax: SyntaxTuple[], indent: number, onLinkClick: LinkClickHandler) {
   if (o === null) {
-    syntax.push(kwd('null'))
+    syntax.push(NULL)
   } else if (isNumber(o)) {
     syntax.push(num(o))
   } else if (isString(o)) {
