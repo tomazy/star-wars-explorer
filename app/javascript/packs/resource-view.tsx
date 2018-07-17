@@ -11,7 +11,7 @@ export class ResourceView extends React.Component<Props> {
   public render() {
     const { resource, linkFactory } = this.props
     return (
-      <pre>
+      <pre className='pre overflow-auto'>
         {renderAsJson(resource, linkFactory)}
       </pre>
     )
