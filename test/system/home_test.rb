@@ -11,7 +11,7 @@ class HomeTest < ApplicationSystemTestCase
     assert has_link? 'films'
   end
 
-  test 'seeing planets' do
+  test 'navigating' do
     visit '/'
 
     assert has_text? 'planets'
@@ -19,5 +19,13 @@ class HomeTest < ApplicationSystemTestCase
 
     click_on 'planets'
     assert has_text? 'Alderaan'
+
+    click_on "/api/people/#{people(:leia_organa).id}"
+    assert has_text? 'Leia Organa'
+    assert has_no_text? 'Alderaan'
+
+    click_on "/api/planets/#{planets(:alderaan).id}"
+    assert has_text? 'Alderaan'
+    assert has_no_text? 'Leia Organa'
   end
 end
