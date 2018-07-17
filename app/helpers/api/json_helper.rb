@@ -1,8 +1,8 @@
 module Api::JsonHelper
-  def json_link_hash(href, text)
+  def json_link_hash(href)
     {
       _href: href,
-      _text: text,
+      _text: href,
     }
   end
 end

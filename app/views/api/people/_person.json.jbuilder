@@ -8,5 +8,8 @@ json.extract! person,
   :birth_year,
   :gender
 json.homeworld do
-  json.merge! json_link_hash(api_planet_path(person.planet), api_planet_path(person.planet))
+  json.merge! json_link_hash(api_planet_path(person.planet))
+end
+json.url do
+  json.merge! json_link_hash(api_person_path(person))
 end

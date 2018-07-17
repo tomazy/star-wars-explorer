@@ -6,11 +6,11 @@ interface Link {
 }
 
 type SyntaxTuple = [string, string | JSX.Element]
-export type LinkClickHandler = (href: string) => void;
+export type LinkFactory = (href: string, text: string) => JSX.Element
 
-export function renderAsJson(o: any, onLinkClick: LinkClickHandler) {
+export function renderAsJson(o: any, linkFactory: LinkFactory) {
   const syntax = []
-  renderRecursive(o, syntax, 0, onLinkClick)
+  renderRecursive(o, syntax, 0, linkFactory)
   return syntax.map((tuple, i) => {
     const [className, element] = tuple
     return <span key={i} className={className || undefined}>{element}</span>
@@ -36,7 +36,7 @@ const COLON = pun(':')
 const BR = br()
 const NULL = kwd('null')
 
-function renderRecursive(o: any, syntax: SyntaxTuple[], indent: number, onLinkClick: LinkClickHandler) {
+function renderRecursive(o: any, syntax: SyntaxTuple[], indent: number, linkFactory: LinkFactory) {
   if (o === null) {
     syntax.push(NULL)
   } else if (isNumber(o)) {
@@ -59,7 +59,7 @@ function renderRecursive(o: any, syntax: SyntaxTuple[], indent: number, onLinkCl
       syntax.push(BR)
       o.forEach((e, idx) => {
         syntax.push(pad((indent + 1) * TAB_SIZE))
-        renderRecursive(e, syntax, indent + 1, onLinkClick)
+        renderRecursive(e, syntax, indent + 1, linkFactory)
         if (idx < o.length - 1) {
           syntax.push(COMMA)
         }
@@ -77,7 +77,7 @@ function renderRecursive(o: any, syntax: SyntaxTuple[], indent: number, onLinkCl
       syntax.push(BR)
       keys.forEach((key, idx) => {
         syntax.push(pad((indent + 1) * TAB_SIZE), prop(key), COLON, pad(1))
-        renderRecursive(o[key], syntax, indent + 1, onLinkClick)
+        renderRecursive(o[key], syntax, indent + 1, linkFactory)
         if (idx < keys.length - 1) {
           syntax.push(COMMA)
         }
@@ -89,14 +89,7 @@ function renderRecursive(o: any, syntax: SyntaxTuple[], indent: number, onLinkCl
   }
 
   function renderLink(l: Link) {
-    syntax.push(['', (
-      <a className='link' href={l._href} onClick={e => {
-        onLinkClick(l._href);
-        e.preventDefault();
-      }}>
-        {l._text}
-      </a>
-    )])
+    syntax.push(['', linkFactory(l._href, `"${l._text}"`)])
   }
 }
 

@@ -12,6 +12,8 @@ import * as ReactDOM from 'react-dom'
 
 import { ResourceView } from './resource-view'
 import { DelayedLoading } from './delayed-loading'
+import { ApiLink } from './api-link'
+import { Breadcrumb } from './breadcrumb'
 
 const ROOT_API = '/api'
 
@@ -44,13 +46,13 @@ class App extends React.Component<{}, State> {
     const { resource, href, loading } = this.state
     return (
       <React.Fragment>
-        <div>
-          {href}
+        <div className='f3 bb b--light-gray pv3'>
+          <Breadcrumb className='dib' path={href} linkFactory={this.renderApiLink} />
         </div>
         {
           loading
           ? <Loading />
-          : resource && <ResourceView resource={resource} onLinkClick={this.handleLinkClick} />
+          : resource && <ResourceView resource={resource} linkFactory={this.renderApiLink} />
         }
       </React.Fragment>
     );
@@ -63,6 +65,12 @@ class App extends React.Component<{}, State> {
     const resource = await res.json()
 
     this.setState({ resource, loading: false })
+  }
+
+  private renderApiLink = (href: string, text: string) => {
+    return (
+      <ApiLink href={href} onClick={this.handleLinkClick}>{text}</ApiLink>
+    )
   }
 
   private handleLinkClick = href => {
