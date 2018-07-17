@@ -28,7 +28,7 @@ class Api::PlanetsControllerTest < ActionDispatch::IntegrationTest
   test 'GET / - ensures the cache is populated' do
     mock = MiniTest::Mock.new
     mock.expect(:call, nil)
-    SwapiCache.stub :ensure_planets_cached, mock do
+    SwapiCache::PlanetCache.stub :ensure_planets_cached, mock do
       get api_planets_url, as: :json
     end
     mock.verify
@@ -48,7 +48,7 @@ class Api::PlanetsControllerTest < ActionDispatch::IntegrationTest
   test 'GET /:id - ensures the cache is populated' do
     mock = MiniTest::Mock.new
     mock.expect(:call, nil, [planets(:hoth).id])
-    SwapiCache.stub :ensure_planet_cached, mock do
+    SwapiCache::PlanetCache.stub :ensure_planet_cached, mock do
       get api_planet_url(planets(:hoth)), as: :json
     end
     mock.verify

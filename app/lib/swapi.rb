@@ -6,9 +6,17 @@ class Swapi
       all_resources 'planets'
     end
 
+    def planet(id)
+      fetch_json resource_url('planets', id)
+    end
+
     private
 
     BASE_URL = 'https://swapi.co/api'
+
+    def resource_url(resource_name, resource_id)
+      "#{BASE_URL}/#{resource_name}/#{resource_id}/"
+    end
 
     def all_resources(name)
       results = []
