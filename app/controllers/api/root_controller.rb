@@ -1,19 +1,13 @@
 class Api::RootController < ApplicationController
   def show
     @root = {
-      planets: make_link('/api/planets', 'planets'),
-      people: make_link('/api/people', 'people'),
-      films: make_link('/api/films', 'films'),
-      species: make_link('/api/species', 'species'),
-      vehicles: make_link('/api/vehicles', 'vehicles'),
-      starships: make_link('/api/starships', 'starships'),
+      planets: helpers.json_link_hash('/api/planets'),
+      people: helpers.json_link_hash('/api/people'),
+      films: '/api/films',
+      species: '/api/species',
+      vehicles: '/api/vehicles',
+      starships:'/api/starships',
     }
     render json: @root
-  end
-
-  private
-
-  def make_link(href, text)
-    { _href: href, _text: text }
   end
 end
