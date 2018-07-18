@@ -1,16 +1,5 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-alderaan:
-  name: Alderaan
-  rotation_period: 24
-  orbital_period: 364
-  diameter: 12500
-  climate: temperate
-  gravity: 1 standard
-  terrain: grasslands, mountains
-  surface_water: 40
-  population: 2000000000
-
 hoth:
   name: Hoth
   rotation_period: 23
@@ -21,3 +10,14 @@ hoth:
   terrain: tundra, ice caves, mountain ranges
   surface_water: 100
   population: unknown
+
+alderaan:
+  name: Alderaan
+  rotation_period: 24
+  orbital_period: 364
+  diameter: 12500
+  climate: temperate
+  gravity: 1 standard
+  terrain: grasslands, mountains
+  surface_water: 40
+  population: 2000000000

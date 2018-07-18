@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+episode_4:
+  title: A New Hope
+  episode_id: 4
+  opening_crawl: It is a period of civil war...
+  director: George Lucas
+  producer: Gary Kurtz, Rick McCallum
+  release_date: 1977-05-25
+
+episode_5:
+  title: The Empire Strikes Back
+  episode_id: 5
+  opening_crawl: It is a dark time for the Rebellion...
+  director: Irvin Kershner
+  producer: Gary Kurtz, Rick McCallum,
+  release_date: 1980-05-17

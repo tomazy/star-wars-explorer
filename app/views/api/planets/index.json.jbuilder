@@ -1,3 +1,1 @@
-json.array! @planets do |planet|
-  json.partial! 'planet', planet: planet
-end
+json.array! @planets, partial: 'planet', as: :planet

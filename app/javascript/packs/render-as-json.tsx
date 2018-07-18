@@ -18,10 +18,10 @@ export function renderAsJson(o: any, linkFactory: LinkFactory) {
 }
 
 const kwd = (s: string): SyntaxTuple => ['dark-blue', s]
-const prop = (s: string): SyntaxTuple => ['dark-green', s]
+const prop = (s: string): SyntaxTuple => ['dark-green', '"' + s + '"']
 const pun = (s: string): SyntaxTuple => ['silver', s]
-const str = (s: string): SyntaxTuple => ['orange', `"${s}"`]
-const num = (n: number): SyntaxTuple => ['blue', String(n)]
+const str = (s: string): SyntaxTuple => ['orange', s]
+const num = (n: number): SyntaxTuple => ['purple', String(n)]
 const br = (): SyntaxTuple => ['', '\n']
 const pad = (n: number): SyntaxTuple => ['', repeatString(' ', n)]
 
@@ -35,6 +35,7 @@ const SQUARE_CLOSE = pun(']')
 const COLON = pun(':')
 const BR = br()
 const NULL = kwd('null')
+const SPACE = pad(1)
 
 function renderRecursive(o: any, syntax: SyntaxTuple[], indent: number, linkFactory: LinkFactory) {
   if (o === null) {
@@ -42,7 +43,7 @@ function renderRecursive(o: any, syntax: SyntaxTuple[], indent: number, linkFact
   } else if (isNumber(o)) {
     syntax.push(num(o))
   } else if (isString(o)) {
-    syntax.push(str(o))
+    renderString(o)
   } else if (isArray(o)) {
     renderArray(o)
   } else if (isLink(o)) {
@@ -51,6 +52,26 @@ function renderRecursive(o: any, syntax: SyntaxTuple[], indent: number, linkFact
     renderObject(o)
   } else {
     console.warn('Unhandled case for', o)
+  }
+
+  function renderString(s: string) {
+    const lines = s.split(/\n/)
+    if (lines.length < 2) {
+      syntax.push(str('"' + s + '"'))
+    } else {
+      lines.forEach((line, idx) => {
+        const isFirstLine = idx === 0
+        const isLastLine = idx === lines.length - 1
+
+        syntax.push(BR, pad((indent + 1) * TAB_SIZE))
+
+        syntax.push(
+          str(
+            (isFirstLine ? '"' : ' ') + line + (isLastLine ? '"' : '')
+          )
+        )
+      })
+    }
   }
 
   function renderArray(o: any[]) {
@@ -76,7 +97,7 @@ function renderRecursive(o: any, syntax: SyntaxTuple[], indent: number, linkFact
     if (keys.length) {
       syntax.push(BR)
       keys.forEach((key, idx) => {
-        syntax.push(pad((indent + 1) * TAB_SIZE), prop(key), COLON, pad(1))
+        syntax.push(pad((indent + 1) * TAB_SIZE), prop(key), COLON, SPACE)
         renderRecursive(o[key], syntax, indent + 1, linkFactory)
         if (idx < keys.length - 1) {
           syntax.push(COMMA)

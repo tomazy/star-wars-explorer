@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class SwapiCache::PersonCacheTest < ActiveSupport::TestCase
+  RESOURCE = 'people'
+
   setup do
     Person.delete_all
     Planet.delete_all
@@ -8,24 +10,22 @@ class SwapiCache::PersonCacheTest < ActiveSupport::TestCase
   end
 
   test 'caching people' do
-    resource = 'people'
-
-    VCR.use_cassette 'people/all' do
+    VCR.use_cassette "#{RESOURCE}/all" do
       SwapiCache::PersonCache.ensure_people_cached
     end
 
     refute_equal 0, Person.count
     refute_equal 0, Planet.count
-    assert CacheStatus.find_by_resource(resource).cached
+    assert CacheStatus.find_by_resource(RESOURCE).cached
   end
 
   test 'caching person' do
     resource_id = 1
-    resource = "people/#{resource_id}"
+    resource = "#{RESOURCE}/#{resource_id}"
 
     CacheStatus.where(resource: resource).update(cached: false)
 
-    VCR.use_cassette "people/#{resource_id}" do
+    VCR.use_cassette resource do
       SwapiCache::PersonCache.ensure_person_cached(resource_id)
     end
 
@@ -37,15 +37,15 @@ class SwapiCache::PersonCacheTest < ActiveSupport::TestCase
 
   test 'updating person cache' do
     resource_id = 1
-    resource = "people/#{resource_id}"
+    resource = "#{RESOURCE}/#{resource_id}"
 
     CacheStatus.where(resource: resource).update(cached: false)
 
-    # Person could be created by a planet
+    # Person was created by a planet
     planet = Planet.create! id: 1
     Person.create! id: resource_id, planet: planet
 
-    VCR.use_cassette "people/#{resource_id}" do
+    VCR.use_cassette resource do
       SwapiCache::PersonCache.ensure_person_cached(resource_id)
     end
 

@@ -2,20 +2,28 @@ require 'open-uri'
 
 class Swapi
   class << self
-    def all_planets
-      all_resources 'planets'
+    def all_films
+      all_resources 'films'
     end
 
     def all_people
       all_resources 'people'
     end
 
-    def planet(id)
-      fetch_json resource_url('planets', id)
+    def all_planets
+      all_resources 'planets'
+    end
+
+    def film(id)
+      fetch_json resource_url('films', id)
     end
 
     def person(id)
       fetch_json resource_url('people', id)
+    end
+
+    def planet(id)
+      fetch_json resource_url('planets', id)
     end
 
     private

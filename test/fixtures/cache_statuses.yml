@@ -7,3 +7,7 @@ cache_status_planets:
 cache_status_people:
   resource: people
   cached: true
+
+cache_status_films:
+  resource: films
+  cached: true

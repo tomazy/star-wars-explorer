@@ -21,9 +21,9 @@ export class Breadcrumb extends React.Component<Props> {
         {parts.map((part, idx) => (
           <li className='dib' key={idx}>
             {
-              idx === parts.length - 1
-              ? <span>{part}</span>
-              : linkFactory(makeHref(idx), part)
+              (idx === parts.length - 1)
+                ? <span>{part}</span>
+                : linkFactory(makeHref(idx), part)
             }
           </li>
         ))}

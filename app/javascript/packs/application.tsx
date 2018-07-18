@@ -51,8 +51,8 @@ class App extends React.Component<{}, State> {
         </div>
         {
           loading
-          ? <Loading />
-          : resource && <ResourceView resource={resource} linkFactory={this.renderApiLink} />
+            ? <Loading />
+            : resource && <ResourceView resource={resource} linkFactory={this.renderApiLink} />
         }
       </React.Fragment>
     );

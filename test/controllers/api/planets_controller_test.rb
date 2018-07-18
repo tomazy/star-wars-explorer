@@ -11,13 +11,13 @@ class Api::PlanetsControllerTest < ActionDispatch::IntegrationTest
     get api_planets_url, as: :json
     assert planets.length > 0
     assert_equal planets.length, response.parsed_body.size
-    assert_equal planets(:alderaan).name, response.parsed_body[0]['name']
-    assert_equal planets(:hoth).name, response.parsed_body[1]['name']
+    assert_equal planets(:hoth).name, response.parsed_body[0]['name']
+    assert_equal planets(:alderaan).name, response.parsed_body[1]['name']
   end
 
   test 'GET / - planets have links to residents' do
     get api_planets_url, as: :json
-    alderaan = response.parsed_body[0]
+    alderaan = response.parsed_body[1]
     assert alderaan['residents'].length > 0
 
     resident = alderaan['residents'].sample

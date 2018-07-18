@@ -7,5 +7,6 @@ Rails.application.routes.draw do
     root 'root#show'
     resources :planets, only: [:index, :show]
     resources :people, only: [:index, :show]
+    resources :films, only: [:index, :show]
   end
 end

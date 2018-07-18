@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_16_204530) do
+ActiveRecord::Schema.define(version: 2018_07_17_222153) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,17 @@ ActiveRecord::Schema.define(version: 2018_07_16_204530) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["resource"], name: "index_cache_statuses_on_resource", unique: true
+  end
+
+  create_table "films", force: :cascade do |t|
+    t.string "title"
+    t.integer "episode_id"
+    t.string "opening_crawl"
+    t.string "director"
+    t.string "producer"
+    t.date "release_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "people", force: :cascade do |t|
