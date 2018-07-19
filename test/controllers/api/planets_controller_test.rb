@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class Api::PlanetsControllerTest < ActionDispatch::IntegrationTest
@@ -9,7 +11,7 @@ class Api::PlanetsControllerTest < ActionDispatch::IntegrationTest
 
   test 'GET / - responds with all planets as json' do
     get api_planets_url, as: :json
-    assert planets.length > 0
+    assert !planets.empty?
     assert_equal planets.length, response.parsed_body.size
     assert_equal planets(:hoth).name, response.parsed_body[0]['name']
     assert_equal planets(:alderaan).name, response.parsed_body[1]['name']
@@ -18,7 +20,7 @@ class Api::PlanetsControllerTest < ActionDispatch::IntegrationTest
   test 'GET / - planets have links to residents' do
     get api_planets_url, as: :json
     alderaan = response.parsed_body[1]
-    assert alderaan['residents'].length > 0
+    assert !alderaan['residents'].empty?
 
     resident = alderaan['residents'].sample
     refute_empty resident['_href']

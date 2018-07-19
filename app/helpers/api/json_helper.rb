@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api::JsonHelper
   def json_link_hash(href)
     {
@@ -6,4 +8,3 @@ module Api::JsonHelper
     }
   end
 end
-

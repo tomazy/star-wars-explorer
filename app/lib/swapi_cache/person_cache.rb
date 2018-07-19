@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SwapiCache::PersonCache < SwapiCache::Base
   class << self
     def ensure_people_cached
@@ -18,7 +20,7 @@ class SwapiCache::PersonCache < SwapiCache::Base
 
     def populate_one(json)
       attrs = json.except 'homeworld', 'films', 'species', 'vehicles', 'starships', \
-        'created', 'edited', 'url'
+                          'created', 'edited', 'url'
 
       person = Person.find_or_initialize_by(id: extract_id(json['url']))
       person.assign_attributes attrs

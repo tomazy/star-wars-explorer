@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SwapiCache::FilmCache < SwapiCache::Base
   class << self
     def ensure_films_cached
@@ -18,7 +20,7 @@ class SwapiCache::FilmCache < SwapiCache::Base
 
     def populate_one(json)
       attrs = json.except 'characters', 'planets', 'starships', 'vehicles', 'species', \
-        'created', 'edited', 'url'
+                          'created', 'edited', 'url'
 
       film = Film.find_or_initialize_by(id: extract_id(json['url']))
       film.assign_attributes attrs
@@ -27,4 +29,3 @@ class SwapiCache::FilmCache < SwapiCache::Base
     end
   end
 end
-

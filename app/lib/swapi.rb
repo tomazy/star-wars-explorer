@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open-uri'
 
 class Swapi
@@ -39,7 +41,7 @@ class Swapi
 
       query = "#{BASE_URL}/#{name}"
 
-      while true do
+      loop do
         json = fetch_json query
 
         results += json['results']

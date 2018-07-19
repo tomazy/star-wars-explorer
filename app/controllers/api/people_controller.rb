@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::PeopleController < ApplicationController
   def index
     SwapiCache::PersonCache.ensure_people_cached

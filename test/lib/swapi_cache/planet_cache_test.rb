@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class SwapiCache::PlanetCacheTest < ActiveSupport::TestCase
@@ -15,7 +17,7 @@ class SwapiCache::PlanetCacheTest < ActiveSupport::TestCase
     residents: [
       'https://swapi.co/api/people/10/',
       'https://swapi.co/api/people/20/',
-    ]
+    ],
   }.stringify_keys
 
   PLANET_2_JSON = {
@@ -26,7 +28,7 @@ class SwapiCache::PlanetCacheTest < ActiveSupport::TestCase
       "https://swapi.co/api/people/#{PLANET_2_RESIDENT_ID_1}/",
       'https://swapi.co/api/people/40/',
       'https://swapi.co/api/people/50/',
-    ]
+    ],
   }.stringify_keys
 
   ALL_PLANETS_JSON = [
@@ -49,7 +51,7 @@ class SwapiCache::PlanetCacheTest < ActiveSupport::TestCase
 
     assert_operator 0, :<, Person.count
 
-    uniq_people_urls = ALL_PLANETS_JSON.map{ |h| h['residents'] }.reduce(:+).sort.uniq
+    uniq_people_urls = ALL_PLANETS_JSON.map { |h| h['residents'] }.reduce(:+).sort.uniq
     assert_equal uniq_people_urls.count, Person.count
 
     assert CacheStatus.find_by_resource(RESOURCE).cached
@@ -60,11 +62,9 @@ class SwapiCache::PlanetCacheTest < ActiveSupport::TestCase
 
     mock = MiniTest::Mock.new
     Swapi.stub :all_planets, mock do
-      begin
-        SwapiCache::PlanetCache.ensure_planets_cached
-      rescue NoMethodError
-        fail 'Swapi.all_planets should not be called!'
-      end
+      SwapiCache::PlanetCache.ensure_planets_cached
+    rescue NoMethodError
+      raise 'Swapi.all_planets should not be called!'
     end
   end
 

@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class SwapiCache::Base
   class << self
     protected
 
     def cached?(resource)
       status = CacheStatus.where(resource: resource).first
-      return status.present? && status.cached?
+      status.present? && status.cached?
     end
 
     def cache(resource, &block)
@@ -26,9 +28,8 @@ class SwapiCache::Base
       end
     end
 
-    def populate_one(json)
+    def populate_one(_json)
       raise 'Not implemented!'
     end
   end
 end
-

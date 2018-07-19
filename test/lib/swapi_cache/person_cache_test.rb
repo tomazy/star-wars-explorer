@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class SwapiCache::PersonCacheTest < ActiveSupport::TestCase
@@ -14,21 +16,21 @@ class SwapiCache::PersonCacheTest < ActiveSupport::TestCase
     url: "/api/people/#{PERSON_1_ID}",
     name: 'Luke Skywalker',
     gender: 'male',
-    homeworld: "/api/planets/#{PLANET_1_ID}"
+    homeworld: "/api/planets/#{PLANET_1_ID}",
   }.stringify_keys
 
   PERSON_2_JSON = {
     url: "/api/people/#{PERSON_2_ID}",
     name: 'Leia Organa',
     gender: 'female',
-    homeworld: "/api/planets/#{PLANET_2_ID}"
+    homeworld: "/api/planets/#{PLANET_2_ID}",
   }.stringify_keys
 
   PERSON_3_JSON = {
     url: "/api/people/#{PERSON_3_ID}",
     name: 'Darth Vader',
     gender: 'male',
-    homeworld: "/api/planets/#{PLANET_1_ID}"
+    homeworld: "/api/planets/#{PLANET_1_ID}",
   }.stringify_keys
 
   ALL_PEOPLE_JSON = [
@@ -53,7 +55,7 @@ class SwapiCache::PersonCacheTest < ActiveSupport::TestCase
 
     assert_equal ALL_PEOPLE_JSON.count, Person.count
 
-    uniq_planets_urls = ALL_PEOPLE_JSON.map{ |h| h['homeworld'] }.sort.uniq
+    uniq_planets_urls = ALL_PEOPLE_JSON.map { |h| h['homeworld'] }.sort.uniq
     assert_equal uniq_planets_urls.count, Planet.count
 
     assert CacheStatus.find_by_resource(RESOURCE).cached
@@ -64,11 +66,9 @@ class SwapiCache::PersonCacheTest < ActiveSupport::TestCase
 
     mock = MiniTest::Mock.new
     Swapi.stub :all_people, mock do
-      begin
-        SwapiCache::PersonCache.ensure_people_cached
-      rescue NoMethodError
-        fail 'Swapi.all_people should not be called!'
-      end
+      SwapiCache::PersonCache.ensure_people_cached
+    rescue NoMethodError
+      raise 'Swapi.all_people should not be called!'
     end
   end
 
@@ -124,11 +124,9 @@ class SwapiCache::PersonCacheTest < ActiveSupport::TestCase
 
     mock = MiniTest::Mock.new
     Swapi.stub :person, mock do
-      begin
-        SwapiCache::PersonCache.ensure_person_cached(resource_id)
-      rescue NoMethodError
-        fail 'Swapi.person should not be called!'
-      end
+      SwapiCache::PersonCache.ensure_person_cached(resource_id)
+    rescue NoMethodError
+      raise 'Swapi.person should not be called!'
     end
   end
 end

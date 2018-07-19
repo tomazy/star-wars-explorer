@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::PlanetsController < ApplicationController
   def index
     SwapiCache::PlanetCache.ensure_planets_cached

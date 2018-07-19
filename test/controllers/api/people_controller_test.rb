@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class Api::PeopleControllerTest < ActionDispatch::IntegrationTest
@@ -9,7 +11,7 @@ class Api::PeopleControllerTest < ActionDispatch::IntegrationTest
 
   test 'GET / - responds with all people as json' do
     get api_people_url, as: :json
-    assert people.length > 0
+    assert !people.empty?
     assert_equal people.length, response.parsed_body.size
     assert_equal people(:leia_organa).name, response.parsed_body[0]['name']
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class SwapiCache::FilmCacheTest < ActiveSupport::TestCase
@@ -46,11 +48,9 @@ class SwapiCache::FilmCacheTest < ActiveSupport::TestCase
 
     mock = MiniTest::Mock.new
     Swapi.stub :all_films, mock do
-      begin
-        SwapiCache::FilmCache.ensure_films_cached
-      rescue NoMethodError
-        fail 'Swapi.all_films should not be called!'
-      end
+      SwapiCache::FilmCache.ensure_films_cached
+    rescue NoMethodError
+      raise 'Swapi.all_films should not be called!'
     end
   end
 

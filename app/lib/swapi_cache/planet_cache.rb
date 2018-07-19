@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SwapiCache::PlanetCache < SwapiCache::Base
   class << self
     def ensure_planets_cached

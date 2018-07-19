@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::FilmsController < ApplicationController
   def index
     SwapiCache::FilmCache.ensure_films_cached

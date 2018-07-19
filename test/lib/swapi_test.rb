@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class SwapiCache::SwapiTest < ActiveSupport::TestCase
@@ -55,4 +57,3 @@ class SwapiCache::SwapiTest < ActiveSupport::TestCase
     end
   end
 end
-
