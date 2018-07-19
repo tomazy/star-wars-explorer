@@ -2,9 +2,9 @@ require 'test_helper'
 
 class Api::PeopleControllerTest < ActionDispatch::IntegrationTest
   # index
-  test "should get index" do
+  test 'GET / - works' do
     get api_people_url, as: :json
-    assert_response :success
+    assert_equal 200, status
   end
 
   test 'GET / - responds with all people as json' do
@@ -24,9 +24,9 @@ class Api::PeopleControllerTest < ActionDispatch::IntegrationTest
   end
 
   # show
-  test "should get show" do
+  test 'GET /:id - works' do
     get api_person_url(people(:leia_organa)), as: :json
-    assert_response :success
+    assert_equal 200, status
   end
 
   test 'GET /:id - responds with the planet as json' do

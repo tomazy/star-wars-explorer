@@ -2,14 +2,14 @@ require 'test_helper'
 
 class Api::FilmsControllerTest < ActionDispatch::IntegrationTest
   # index
-  test "should get index" do
+  test 'GET / - works' do
     get api_films_url, as: :json
-    assert_response :success
+    assert_equal 200, status
   end
 
   test 'GET / - responds with all films as json' do
     get api_films_url, as: :json
-    assert films.length > 0
+    assert_operator 0, :<, films.length
     assert_equal films.length, response.parsed_body.size
     assert_equal films(:episode_4).title, response.parsed_body[0]['title']
     assert_equal films(:episode_5).title, response.parsed_body[1]['title']
@@ -25,9 +25,9 @@ class Api::FilmsControllerTest < ActionDispatch::IntegrationTest
   end
 
   # show
-  test "should get show" do
+  test 'GET /:id - works' do
     get api_film_url(films(:episode_4)), as: :json
-    assert_response :success
+    assert_equal 200, status
   end
 
   test 'GET /:id - responds with the planet as json' do

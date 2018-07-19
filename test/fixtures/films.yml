@@ -1,6 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 episode_4:
+  id: 10
   title: A New Hope
   episode_id: 4
   opening_crawl: It is a period of civil war...
@@ -9,6 +10,7 @@ episode_4:
   release_date: 1977-05-25
 
 episode_5:
+  id: 20
   title: The Empire Strikes Back
   episode_id: 5
   opening_crawl: It is a dark time for the Rebellion...

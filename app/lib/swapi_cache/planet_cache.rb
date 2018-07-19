@@ -18,9 +18,9 @@ class SwapiCache::PlanetCache < SwapiCache::Base
 
     def populate_one(json)
       attrs = json.except 'residents', 'films', 'created', 'edited', 'url'
-      attrs['id'] = extract_id json['url']
 
-      planet = Planet.new attrs
+      planet = Planet.find_or_initialize_by(id: extract_id(json['url']))
+      planet.assign_attributes attrs
 
       json_residents_ids = json['residents'].map { |url| extract_id(url) }
       json_residents_ids.each do |id|

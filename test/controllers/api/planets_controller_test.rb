@@ -2,7 +2,7 @@ require 'test_helper'
 
 class Api::PlanetsControllerTest < ActionDispatch::IntegrationTest
   # index
-  test 'GET /' do
+  test 'GET / - works' do
     get api_planets_url, as: :json
     assert_equal 200, status
   end
@@ -35,7 +35,7 @@ class Api::PlanetsControllerTest < ActionDispatch::IntegrationTest
   end
 
   # show
-  test 'GET /:id' do
+  test 'GET /:id - works' do
     get api_planet_url(planets(:hoth)), as: :json
     assert_equal 200, status
   end
