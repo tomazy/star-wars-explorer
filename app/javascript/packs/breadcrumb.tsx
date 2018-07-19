@@ -17,12 +17,12 @@ export class Breadcrumb extends React.Component<Props> {
     }
 
     return (
-      <ul className={`Breadcrumb list ma0 pa0 light-silver ${className || ''}`}>
+      <ul className={`Breadcrumb code list ma0 pa0 light-silver ${className || ''}`}>
         {parts.map((part, idx) => (
           <li className='dib' key={idx}>
             {
               (idx === parts.length - 1)
-                ? <span>{part}</span>
+                ? <span className="near-black">{part}</span>
                 : linkFactory(makeHref(idx), part)
             }
           </li>

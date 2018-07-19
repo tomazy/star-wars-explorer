@@ -21,6 +21,7 @@ interface State {
   loading: boolean
   href: string
   resource?: Object
+  error?: string
 }
 
 const Loading = () =>
@@ -32,23 +33,27 @@ const Loading = () =>
 
 class App extends React.Component<{}, State> {
 
-  public state = {
+  public state: State = {
     loading: false,
     href: '',
-    resource: null,
   }
 
   public componentWillMount() {
-    this.loadResource(ROOT_API)
+    this.loadResource(ROOT_API + '')
   }
 
   public render() {
-    const { resource, href, loading } = this.state
+    const { resource, href, loading, error } = this.state
     return (
       <React.Fragment>
-        <div className='f3 bb b--light-gray pv3'>
+        <div className='f3 bb b--light-gray pv3 mb3'>
           <Breadcrumb className='dib' path={href} linkFactory={this.renderApiLink} />
         </div>
+
+        {
+          error && <div className='code bg-dark-red white b tc pa4'>{error}</div>
+        }
+
         {
           loading
             ? <Loading />
@@ -59,12 +64,23 @@ class App extends React.Component<{}, State> {
   }
 
   private async loadResource(href) {
-    this.setState({ href, loading: true, resource: null })
+    this.setState({ href, loading: true, resource: null, error: null })
 
-    const res = await fetch(href)
-    const resource = await res.json()
+    const response = await fetch(href)
+    console.log({ response, status: response.status })
 
-    this.setState({ resource, loading: false })
+    if (response.status === 200) {
+      const resource = await response.json()
+      this.setState({ resource })
+    } else if (response.status === 404) {
+      const error = `Resource "${href}" not found`
+      this.setState({ error })
+    } else {
+      const error = response.statusText
+      this.setState({ error })
+    }
+
+    this.setState({ loading: false })
   }
 
   private renderApiLink = (href: string, text: string) => {

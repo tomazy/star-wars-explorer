@@ -4,9 +4,9 @@ class Api::RootController < ApplicationController
       people: helpers.json_link_hash(api_people_path),
       planets: helpers.json_link_hash(api_planets_path),
       films: helpers.json_link_hash(api_films_path),
-      species: '/api/species',
-      vehicles: '/api/vehicles',
-      starships:'/api/starships',
+      species: helpers.json_link_hash('/api/species'),
+      vehicles: helpers.json_link_hash('/api/vehicles'),
+      starships: helpers.json_link_hash('/api/starships'),
     }
     render json: @root
   end

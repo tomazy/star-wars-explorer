@@ -9,12 +9,15 @@ interface Props {
 export class ResourceView extends React.Component<Props> {
   public render() {
     const { resource, linkFactory } = this.props
+
     const hlPairs = highlightAsJson(resource, linkFactory)
+
     const spans = hlPairs.map(([syntax, element], idx) => (
       <span key={idx} className={syntaxToClassName(syntax)}>{element}</span>
     ))
+
     return (
-      <pre className='pre overflow-auto'>
+      <pre className='pre code overflow-auto overflow-visible-ns ma0'>
         {spans}
       </pre>
     )
