@@ -24,7 +24,7 @@ class SwapiCache::PlanetCache < SwapiCache::Base
 
       json_residents_ids = json['residents'].map { |url| extract_id(url) }
       json_residents_ids.each do |id|
-        planet.residents.build id: id
+        planet.residents.find_or_initialize_by id: id
       end
 
       planet.save!

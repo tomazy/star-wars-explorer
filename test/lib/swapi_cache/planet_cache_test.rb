@@ -6,13 +6,15 @@ class SwapiCache::PlanetCacheTest < ActiveSupport::TestCase
   PLANET_1_ID = 100
   PLANET_2_ID = 200
 
+  PLANET_2_RESIDENT_ID_1 = 30
+
   PLANET_1_JSON = {
     url: "/api/people/#{PLANET_1_ID}",
     rotation_period: '12',
     name: 'Earth',
     residents: [
-      'https://swapi.co/api/people/1/',
-      'https://swapi.co/api/people/2/',
+      'https://swapi.co/api/people/10/',
+      'https://swapi.co/api/people/20/',
     ]
   }.stringify_keys
 
@@ -21,9 +23,9 @@ class SwapiCache::PlanetCacheTest < ActiveSupport::TestCase
     rotation_period: '13',
     name: 'Mars',
     residents: [
-      'https://swapi.co/api/people/3/',
-      'https://swapi.co/api/people/4/',
-      'https://swapi.co/api/people/5/',
+      "https://swapi.co/api/people/#{PLANET_2_RESIDENT_ID_1}/",
+      'https://swapi.co/api/people/40/',
+      'https://swapi.co/api/people/50/',
     ]
   }.stringify_keys
 
@@ -86,8 +88,12 @@ class SwapiCache::PlanetCacheTest < ActiveSupport::TestCase
     resource_id = PLANET_2_ID
     resource = "#{RESOURCE}/#{resource_id}"
 
-    # A case when the planet placeholder already exists
+    # A case when the planet placeholder already exists.
+    # This happens when we visit a person whose homeworld is this planet and then
+    # visit the planet.
+    # [empty cache] -> people -> planets/1
     Planet.create! id: resource_id
+    Person.create! id: PLANET_2_RESIDENT_ID_1, planet_id: resource_id
 
     Swapi.stub :planet, PLANET_2_JSON, [resource_id] do
       SwapiCache::PlanetCache.ensure_planet_cached(resource_id)
@@ -98,6 +104,7 @@ class SwapiCache::PlanetCacheTest < ActiveSupport::TestCase
     planet = Planet.find resource_id
     assert_equal PLANET_2_JSON['name'], planet.name
     assert_equal PLANET_2_JSON['rotation_period'], planet.rotation_period
+    assert_equal PLANET_2_JSON['residents'].count, Person.count
 
     assert CacheStatus.find_by_resource(resource).cached
   end
