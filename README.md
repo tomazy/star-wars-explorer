@@ -38,3 +38,6 @@ bundle install
 * Deployment instructions
   - `git push heroku master`
   - `heroku run rake db:migrate`
+
+* Clearing SWAPI cache
+  - `bin/rails swe:clear_swapi_cache`
