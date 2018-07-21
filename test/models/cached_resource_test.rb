@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class CacheStatusTest < ActiveSupport::TestCase
+class CachedResourceTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

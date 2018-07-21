@@ -5,7 +5,7 @@ class SwapiCache::Base
     protected
 
     def cached?(resource)
-      CacheStatus.find_by(resource: resource).present?
+      CachedResource.find_by(resource: resource).present?
     end
 
     def cache(resource, &block)
@@ -13,7 +13,7 @@ class SwapiCache::Base
 
       yield
 
-      CacheStatus.create! resource: resource
+      CachedResource.create! resource: resource
     end
 
     def extract_id(url)

@@ -39,7 +39,7 @@ class SwapiCache::PlanetCacheTest < ActiveSupport::TestCase
   setup do
     Person.delete_all
     Planet.delete_all
-    CacheStatus.where(resource: RESOURCE).delete_all
+    CachedResource.where(resource: RESOURCE).delete_all
   end
 
   test 'caching planets (miss) - populates the cache' do
@@ -54,11 +54,11 @@ class SwapiCache::PlanetCacheTest < ActiveSupport::TestCase
     uniq_people_urls = ALL_PLANETS_JSON.map { |h| h['residents'] }.reduce(:+).sort.uniq
     assert_equal uniq_people_urls.count, Person.count
 
-    assert CacheStatus.find_by(resource: RESOURCE).present?
+    assert CachedResource.find_by(resource: RESOURCE).present?
   end
 
   test 'caching planets (hit) - does not call the api' do
-    CacheStatus.create! resource: RESOURCE
+    CachedResource.create! resource: RESOURCE
 
     mock = MiniTest::Mock.new
     Swapi.stub :all_planets, mock do
@@ -81,7 +81,7 @@ class SwapiCache::PlanetCacheTest < ActiveSupport::TestCase
     assert_operator 0, :<, Person.count
     assert_equal PLANET_1_JSON['residents'].size, Person.count
 
-    assert CacheStatus.find_by(resource: resource).present?
+    assert CachedResource.find_by(resource: resource).present?
   end
 
   test 'updating planet cache (miss) - updates existing record' do
@@ -106,6 +106,6 @@ class SwapiCache::PlanetCacheTest < ActiveSupport::TestCase
     assert_equal PLANET_2_JSON['rotation_period'], planet.rotation_period
     assert_equal PLANET_2_JSON['residents'].count, Person.count
 
-    assert CacheStatus.find_by(resource: resource).present?
+    assert CachedResource.find_by(resource: resource).present?
   end
 end

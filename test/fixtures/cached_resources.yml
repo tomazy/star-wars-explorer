@@ -1,10 +1,10 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-cache_status_planets:
+cached_resource_planets:
   resource: planets
 
-cache_status_people:
+cached_resource_people:
   resource: people
 
-cache_status_films:
+cached_resource_films:
   resource: films

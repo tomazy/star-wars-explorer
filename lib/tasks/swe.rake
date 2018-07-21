@@ -4,6 +4,6 @@ namespace :swe do
     Film.delete_all
     Person.delete_all
     Planet.delete_all
-    CacheStatus.delete_all
+    CachedResource.delete_all
   end
 end
