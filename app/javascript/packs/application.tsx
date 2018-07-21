@@ -1,4 +1,3 @@
-/* eslint no-console:0 */
 // This file is automatically compiled by Webpack, along with any other files
 // present in this directory. You're encouraged to place your actual application logic in
 // a relevant structure within app/javascript and only use these pack files to reference
@@ -67,7 +66,6 @@ class App extends React.Component<{}, State> {
     this.setState({ href, loading: true, resource: null, error: null })
 
     const response = await fetch(href)
-    console.log({ response, status: response.status })
 
     if (response.status === 200) {
       const resource = await response.json()
