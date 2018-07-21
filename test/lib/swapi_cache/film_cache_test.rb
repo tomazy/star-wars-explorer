@@ -27,11 +27,11 @@ class SwapiCache::FilmCacheTest < ActiveSupport::TestCase
 
   setup do
     Film.delete_all
-    CacheStatus.where(resource: RESOURCE).update(cached: false)
+    CacheStatus.where(resource: RESOURCE).delete_all
   end
 
   test 'caching films (miss) - populates the cache' do
-    refute CacheStatus.find_by_resource(RESOURCE).cached
+    refute CacheStatus.find_by_resource(RESOURCE).present?
     assert_equal 0, Film.count
 
     Swapi.stub :all_films, ALL_FILMS_JSON do
@@ -40,11 +40,11 @@ class SwapiCache::FilmCacheTest < ActiveSupport::TestCase
 
     assert_equal ALL_FILMS_JSON.count, Film.count
 
-    assert CacheStatus.find_by_resource(RESOURCE).cached
+    assert CacheStatus.find_by_resource(RESOURCE).present?
   end
 
   test 'caching films (hit) - does not call the api' do
-    CacheStatus.where(resource: RESOURCE).update(cached: true)
+    CacheStatus.create! resource: RESOURCE
 
     mock = MiniTest::Mock.new
     Swapi.stub :all_films, mock do
@@ -68,6 +68,6 @@ class SwapiCache::FilmCacheTest < ActiveSupport::TestCase
     assert_equal FILM_1_JSON['title'], film.title
     assert_equal FILM_1_JSON['episode_id'], film.episode_id
 
-    assert CacheStatus.find_by_resource(resource).cached
+    assert CacheStatus.find_by_resource(resource).present?
   end
 end

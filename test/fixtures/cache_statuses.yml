@@ -2,12 +2,9 @@
 
 cache_status_planets:
   resource: planets
-  cached: true
 
 cache_status_people:
   resource: people
-  cached: true
 
 cache_status_films:
   resource: films
-  cached: true

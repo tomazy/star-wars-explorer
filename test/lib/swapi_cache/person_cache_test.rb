@@ -43,11 +43,11 @@ class SwapiCache::PersonCacheTest < ActiveSupport::TestCase
     Person.delete_all
     Planet.delete_all
     Film.delete_all
-    CacheStatus.where(resource: RESOURCE).update(cached: false)
+    CacheStatus.where(resource: RESOURCE).delete_all
   end
 
   test 'caching people (miss) - populates the cache' do
-    refute CacheStatus.find_by_resource(RESOURCE).cached
+    refute CacheStatus.find_by(resource: RESOURCE).present?
 
     Swapi.stub :all_people, ALL_PEOPLE_JSON do
       SwapiCache::PersonCache.ensure_people_cached
@@ -58,11 +58,11 @@ class SwapiCache::PersonCacheTest < ActiveSupport::TestCase
     uniq_planets_urls = ALL_PEOPLE_JSON.map { |h| h['homeworld'] }.sort.uniq
     assert_equal uniq_planets_urls.count, Planet.count
 
-    assert CacheStatus.find_by_resource(RESOURCE).cached
+    assert CacheStatus.find_by(resource: RESOURCE).present?
   end
 
   test 'caching people (hit) - does not call the api' do
-    CacheStatus.where(resource: RESOURCE).update(cached: true)
+    CacheStatus.create! resource: RESOURCE
 
     mock = MiniTest::Mock.new
     Swapi.stub :all_people, mock do
@@ -92,7 +92,7 @@ class SwapiCache::PersonCacheTest < ActiveSupport::TestCase
     planet = Planet.find PLANET_1_ID
     assert_nil planet.name
 
-    assert CacheStatus.find_by_resource(resource).cached
+    assert CacheStatus.find_by(resource: resource).present?
   end
 
   test 'updating person cache (miss) - updates existing record' do
@@ -113,14 +113,14 @@ class SwapiCache::PersonCacheTest < ActiveSupport::TestCase
     assert_equal PERSON_2_JSON['name'], person.name
     assert_equal PERSON_2_JSON['gender'], person.gender
 
-    assert CacheStatus.find_by_resource(resource).cached
+    assert CacheStatus.find_by(resource: resource).present?
   end
 
   test 'caching person (hit) - does not call the api' do
     resource_id = PERSON_1_ID
     resource = "#{RESOURCE}/#{resource_id}"
 
-    CacheStatus.create! resource: resource, cached: true
+    CacheStatus.create! resource: resource
 
     mock = MiniTest::Mock.new
     Swapi.stub :person, mock do

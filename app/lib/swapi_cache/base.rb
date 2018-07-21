@@ -5,17 +5,15 @@ class SwapiCache::Base
     protected
 
     def cached?(resource)
-      status = CacheStatus.where(resource: resource).first
-      status.present? && status.cached?
+      CacheStatus.find_by(resource: resource).present?
     end
 
     def cache(resource, &block)
-      status = CacheStatus.find_or_initialize_by(resource: resource)
-      return if status.cached?
+      return if cached? resource
 
       yield
 
-      status.update_attribute :cached, true
+      CacheStatus.create! resource: resource
     end
 
     def extract_id(url)
