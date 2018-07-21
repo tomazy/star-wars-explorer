@@ -22,7 +22,7 @@ type HighlightPair = [
 
 const TAB_SIZE = 4
 
-export function highlightAsJson(o: any, linkFactory: LinkFactory) {
+export function highlightJson(o: any, linkFactory: LinkFactory) {
   return highlightAny(o, 0, linkFactory)
 }
 
